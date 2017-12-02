@@ -473,7 +473,7 @@ public class AirBooking
 								       + flightnum + ", "
 								       + pid + ")";
 			
-			esql.executeQuery(trashql);
+			esql.executeUpdate(trashql);
 		}
 		catch(Exception e)
 		{
@@ -522,7 +522,7 @@ public class AirBooking
 										+ score + ", "
 										+ comment + ");";
 			
-			esql.executeQuery(trashql);
+			esql.executeUpdate(trashql);
 		
 		}
 		catch(Exception e)
