@@ -511,10 +511,19 @@ public class AirBooking
 			
 			System.out.println("Enter a score");
 			score = str_get.nextLine();
+			
+			System.out.println("Enter a comment");
+			String comment = str_get.nextLine();
 		
-			String trashql = "";
+			String trashql = "INSERT INTO ratings(rid, pid, flightnum, score, comment) " + 
+							 "VALUES( " + rid + ", "
+										+ pid + ", "
+										+ flightNum + ", "
+										+ score + ", "
+										+ comment + ");";
 			
 			esql.executeQuery(trashql);
+		
 		}
 		catch(Exception e)
 		{
