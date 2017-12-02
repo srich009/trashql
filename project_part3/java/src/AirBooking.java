@@ -239,22 +239,6 @@ public class AirBooking
 	 * @param args the command line arguments this inclues the <mysql|pgsql> <login file>
 	 */
 	 
-	/*public boolean pidIsValid(String pid){
-		String trashql = "SELECT pid FROM passenger WHERE pid = " + pid;
-		try
-		{
-			List<List<String>> returnval;
-			returnval = executeQueryAndReturnResult(trashql);
-			System.out.print(returnval);
-		}
-		catch(Exception e)
-		{
-			System.err.println(e.getMessage());
-		}
-		
-		return true;
-	}*/
-	 
 	public static void main(String[] args) 
 	{
 		if(args.length != 3) 
@@ -360,6 +344,41 @@ public class AirBooking
 		return input;
 	}// end readChoice
 	
+	public boolean pidIsValid(String pid){
+		String trashql = "SELECT pid FROM passenger WHERE pid = " + pid;
+		try
+		{
+			List<List<String>> returnval;
+			returnval = executeQueryAndReturnResult(trashql);
+			System.out.print(returnval);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		
+		return true;
+	}
+
+	public boolean DateIsValid(String date)
+	{
+		try
+		{
+			String[] box = date.split("-");
+			if( box == null || box.length != 3 ){return false;}
+			int x1 = Integer.parseInt(box[0]); // year
+			int x2 = Integer.parseInt(box[1]); // month
+			int x3 = Integer.parseInt(box[2]); // day
+			if(x2 >12 || x2 < 1){return false;}
+			if(x2 >31 || x2 < 1){return false;}
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		return true;
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -372,24 +391,30 @@ public class AirBooking
 		// bdate DATE NOT NULL,
 		// country CHAR(24) NOT NULL,
 		
+		String p_name = "";
+		String p_dob = "";
+		String p_country = "";
+		String p_pass = "";
+		String p_id = "";
+		
 		try
 		{
 			System.out.println("Enter Passenger's Full Name");
-			String p_name = str_get.nextLine();
+			p_name = str_get.nextLine();
 
 			System.out.println("Enter Date of Birth (format: YYYY-MM-DD)");
-			String p_dob = str_get.nextLine();
+			p_dob = str_get.nextLine();
+			
 			
 			System.out.println("Enter Country");
-			String p_country = str_get.nextLine();
+			p_country = str_get.nextLine();
 			
 			System.out.println("Enter Passport number");
-			String p_pass = str_get.nextLine();
+			p_pass = str_get.nextLine();
 			
 			// this should be done by system automatically
 			System.out.println("Enter Passenger ID");
-			String p_id = str_get.nextLine();
-
+			p_id = str_get.nextLine();
 			
 			String trashql = "insert into passenger (pID,passNum,fullName,bdate,country)" +
 			"values (" + 
@@ -417,19 +442,24 @@ public class AirBooking
 		// flightNum CHAR(8) NOT NULL,
 		// pID INTEGER NOT NULL,
 
+		String bookref = "";
+		String date = "";		
+		String flightnum = "";
+		String pid = "";
+		
 		try
 		{		
 			System.out.println("Enter a booking Refernce number");
-			String bookref = str_get.nextLine();
+			bookref = str_get.nextLine();
 						
 			System.out.println("Enter a departure date (format: YYYY-MM-DD)");
-			String date = str_get.nextLine();
+			date = str_get.nextLine();
 			
 			System.out.println("Enter a flight number");
-			String flightnum = str_get.nextLine();
+			flightnum = str_get.nextLine();
 			
 			System.out.println("Enter a pid");
-			String pid = str_get.nextLine();
+			pid = str_get.nextLine();
 			
 			/*while(!esql.pidIsValid(pid)){
 				System.out.println("Invalid IP, please try again.");
@@ -461,21 +491,26 @@ public class AirBooking
 		// score _SCORE NOT NULL,
 		// comment TEXT,
 
+		String rid = "";
+		String pid = "";
+		String flightNum = "";
+		String score = "";
+		
 		try
 		{
 
 			// should be done by system automatically
 			System.out.println("Enter a rid");
-			String rid = str_get.nextLine();
+			rid = str_get.nextLine();
 
 			System.out.println("Enter a pid");
-			String pid = str_get.nextLine();
+			pid = str_get.nextLine();
 
 			System.out.println("Enter a flight number");
-			String flightNum = str_get.nextLine();
+			flightNum = str_get.nextLine();
 			
 			System.out.println("Enter a score");
-			String score = str_get.nextLine();
+			score = str_get.nextLine();
 		
 			String trashql = "";
 			
@@ -543,12 +578,14 @@ public class AirBooking
 	// 6.) Print the k most popular destinations based on the number of flights offered to them (i.e. destination, choices)
 	public static void ListMostPopularDestinations(AirBooking esql) 
 	{
+		
+		String dest_num = "";
 		try
 		{
 			// stuff
 			
 			System.out.println("Enter number of most popular destinations to see ");
-			String dest_num = str_get.nextLine();
+			dest_num = str_get.nextLine();
 			dest_num = dest_num.trim();
 			
 			String trashql = "SELECT f.destination, COUNT(f.destination)AS num_of " +
@@ -567,11 +604,13 @@ public class AirBooking
 	
 	// 7.) List the k highest rated Routes (i.e. Airline Name, flightNum, Avg_Score)
 	public static void ListHighestRatedRoutes(AirBooking esql)
-	{		
+	{	
+			
+		String k = "";
 		try
 		{
 			System.out.println("How many highest rated routes would you like to see?: ");
-			String k = str_get.nextLine();
+			k = str_get.nextLine();
 
 			String trashql = "SELECT a.name, r.flightnum, f.origin, f.destination, f.plane, AVG(r.score) AS avg_score " + 
 							 "FROM airline a, flight f, ratings r " +
@@ -591,6 +630,8 @@ public class AirBooking
 	// 8.) List flight to destination in order of duration (i.e. Airline name, flightNum, origin, destination, duration, plane)
 	public static void ListFlightFromOriginToDestinationInOrderOfDuration(AirBooking esql)
 	{
+		
+		String numRecords = "";
 		try
 		{
 			// stuff
@@ -603,7 +644,7 @@ public class AirBooking
 			destination = destination.trim();
 			
 			System.out.println("Enter the number of desired records");
-			String numRecords = str_get.nextLine();
+			numRecords = str_get.nextLine();
 			
 			
 			String trashql = "SELECT a.name, f.flightnum, f.origin, f.destination, f.plane, f.duration " +
@@ -623,14 +664,17 @@ public class AirBooking
 	// 9.) Find Number of Available Seats on a given Flight
 	public static void FindNumberOfAvailableSeatsForFlight(AirBooking esql)
 	{
+		String fnum = "";
+		String date = "";
+		
 		try // print # of seats
 		{
 			System.out.println("Enter a flight number");
-			String fnum = str_get.nextLine();
+			fnum = str_get.nextLine();
 			fnum = fnum.trim();
 				
 			System.out.println("Enter a flight date (YYYY-MM-DD)");
-			String date = str_get.nextLine();
+			date = str_get.nextLine();
 			date = date.trim();		
 
 			String trashql1 = "select seats from flight where flightnum = '" + fnum + "';";
