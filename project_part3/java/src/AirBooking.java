@@ -381,7 +381,10 @@ public class AirBooking
 	
 	public String getPid()
 	{
-		return "";
+		String trashql = "select max(pid) from passenger;" 
+		List<List<String>> r2 = esql.executeQueryAndReturnResult(trashql2);
+		pid = r2.get(0).get(0);
+		return pid;
 	}
 	
 	public String getRid()
@@ -640,6 +643,7 @@ public class AirBooking
 		String k = "";
 		try
 		{
+			// NEED TO CHECK
 			System.out.println("How many highest rated routes would you like to see?: ");
 			k = str_get.nextLine();
 
@@ -665,7 +669,6 @@ public class AirBooking
 		String numRecords = "";
 		try
 		{
-			// stuff
 			System.out.println("Enter a flight origin");
 			String origin = str_get.nextLine();
 			origin = origin.trim();
@@ -674,6 +677,7 @@ public class AirBooking
 			String destination = str_get.nextLine();
 			destination = destination.trim();
 			
+			// NEED TO CHECK
 			System.out.println("Enter the number of desired records");
 			numRecords = str_get.nextLine();
 			
@@ -704,6 +708,7 @@ public class AirBooking
 			fnum = str_get.nextLine();
 			fnum = fnum.trim();
 				
+			// NEED TO CHECK
 			System.out.println("Enter a flight date (YYYY-MM-DD)");
 			date = str_get.nextLine();
 			date = date.trim();		
