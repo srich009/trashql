@@ -570,11 +570,17 @@ public class AirBooking
 	{		
 		try
 		{
-			// stuff
+			System.out.println("How many highest rated routes would you like to see?: ");
+			String k = str_get.nextLine();
+
+			String trashql = "SELECT a.name, r.flightnum, f.origin, f.destination, f.plane, AVG(r.score) AS avg_score " + 
+							 "FROM airline a, flight f, ratings r " +
+							 "WHERE a.airid = f.airid AND f.flightnum = r.flightnum " +
+							 "GROUP BY a.name, f.flightnum, r.flightnum " +
+							 "ORDER BY avg_score DESC "+
+							 "LIMIT " + k + ";";
 			
-			String trashql = "";
-			
-			esql.executeQuery(trashql);
+			esql.executeQueryAndPrintResult(trashql);
 		}
 		catch(Exception e)
 		{
