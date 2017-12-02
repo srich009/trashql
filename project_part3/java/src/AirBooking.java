@@ -238,6 +238,23 @@ public class AirBooking
 	 * 
 	 * @param args the command line arguments this inclues the <mysql|pgsql> <login file>
 	 */
+	 
+	/*public boolean pidIsValid(String pid){
+		String trashql = "SELECT pid FROM passenger WHERE pid = " + pid;
+		try
+		{
+			List<List<String>> returnval;
+			returnval = executeQueryAndReturnResult(trashql);
+			System.out.print(returnval);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		
+		return true;
+	}*/
+	 
 	public static void main(String[] args) 
 	{
 		if(args.length != 3) 
@@ -413,6 +430,12 @@ public class AirBooking
 			
 			System.out.println("Enter a pid");
 			String pid = str_get.nextLine();
+			
+			/*while(!esql.pidIsValid(pid)){
+				System.out.println("Invalid IP, please try again.");
+				System.out.println("Enter a pid");
+				pid = str_get.nextInt();
+			}*/
 			
 			String trashql = "INSERT INTO booking(bookref, departure, flightnum, pid)" +
 							 "VALUES(" + bookref + ", "
