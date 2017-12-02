@@ -379,6 +379,16 @@ public class AirBooking
 		return true;
 	}
 	
+	public String getPid()
+	{
+		return "";
+	}
+	
+	public String getRid()
+	{
+		return "";
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -401,16 +411,22 @@ public class AirBooking
 		{
 			System.out.println("Enter Passenger's Full Name");
 			p_name = str_get.nextLine();
+			if(p_name.length() > 24)
+			{ p_name = p_name.substring(0,23); }
 
+			// NEED TO CHECK
 			System.out.println("Enter Date of Birth (format: YYYY-MM-DD)");
 			p_dob = str_get.nextLine();
 			
-			
 			System.out.println("Enter Country");
 			p_country = str_get.nextLine();
+			if(p_country.length() > 24)
+			{ p_country = p_country.substring(0,23); }
 			
 			System.out.println("Enter Passport number");
 			p_pass = str_get.nextLine();
+			if(p_pass.length() > 10)
+			{ p_pass = p_pass.substring(0,9); }
 			
 			// this should be done by system automatically
 			System.out.println("Enter Passenger ID");
@@ -451,12 +467,17 @@ public class AirBooking
 		{		
 			System.out.println("Enter a booking Refernce number");
 			bookref = str_get.nextLine();
+			if(bookref.length() > 10)
+			{ bookref = bookref.substring(0,9); }
 						
+			// NEED TO CHECK
 			System.out.println("Enter a departure date (format: YYYY-MM-DD)");
 			date = str_get.nextLine();
 			
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
+			if(flightnum.length() > 8)
+			{ flightnum = flightnum.substring(0,7); }
 			
 			System.out.println("Enter a pid");
 			pid = str_get.nextLine();
@@ -493,7 +514,7 @@ public class AirBooking
 
 		String rid = "";
 		String pid = "";
-		String flightNum = "";
+		String flightnum = "";
 		String score = "";
 		
 		try
@@ -507,7 +528,9 @@ public class AirBooking
 			pid = str_get.nextLine();
 
 			System.out.println("Enter a flight number");
-			flightNum = str_get.nextLine();
+			flightnum = str_get.nextLine();
+			if(flightnum.length() > 10)
+			{ flightnum = flightnum.substring(0,9); }
 			
 			System.out.println("Enter a score");
 			score = str_get.nextLine();
@@ -518,7 +541,7 @@ public class AirBooking
 			String trashql = "INSERT INTO ratings(rid, pid, flightnum, score, comment) " + 
 							 "VALUES( " + rid + ", "
 										+ pid + ", "
-										+ flightNum + ", "
+										+ flightnum + ", "
 										+ score + ", "
 										+ comment + ");";
 			
@@ -591,8 +614,7 @@ public class AirBooking
 		String dest_num = "";
 		try
 		{
-			// stuff
-			
+			// NEED TO CHECK
 			System.out.println("Enter number of most popular destinations to see ");
 			dest_num = str_get.nextLine();
 			dest_num = dest_num.trim();
