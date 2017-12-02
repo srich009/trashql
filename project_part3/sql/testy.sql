@@ -25,6 +25,7 @@
 --INSERT INTO booking(bookref, departure, flightnum, pid)
 --VALUES('s' , '1996-07-01', 'KLM711', 0);
 
+/*
 --Query 7
 SELECT a.name, f.flightnum, f.origin, f.destination, f.plane, AVG(r.score) AS avg_score
 FROM airline a, flight f, ratings r
@@ -33,6 +34,8 @@ GROUP BY a.name, f.flightnum
 ORDER BY avg_score
 LIMIT 1000
 ;
+*/
+
 --https://www.google.com/search?q=sql+must+appear+in+the+group+by+clause&oq=sql+must+appear+&aqs=chrome.0.0j69i57j0l2.2711j0j7&sourceid=chrome&ie=UTF-8
 
 --Query 8
@@ -41,3 +44,16 @@ LIMIT 1000
 --WHERE a.airid = f.airid AND f.origin = 'Moscow' AND f.destination = 'Sydney'
 --ORDER BY f.duration
 --LIMIT 1;
+
+/*
+-- q # 6
+-- list of the k-most popular destinations depending on the number of flights offered to that specific destination number of flights offered to that specific destination.
+SELECT f.destination, COUNT(f.destination)AS numbah
+FROM flight f
+GROUP BY f.destination
+ORDER BY numbah DESC
+LIMIT 5
+;
+*/
+
+

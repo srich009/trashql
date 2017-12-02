@@ -547,9 +547,17 @@ public class AirBooking
 		{
 			// stuff
 			
-			String trashql = "";
+			System.out.println("Enter number of most popular destinations to see ");
+			String dest_num = str_get.nextLine();
+			dest_num = dest_num.trim();
 			
-			esql.executeQuery(trashql);
+			String trashql = "SELECT f.destination, COUNT(f.destination)AS num_of " +
+			" FROM flight f " +
+			" GROUP BY f.destination " +
+			" ORDER BY num_of DESC " +
+			" LIMIT " + dest_num ;
+			
+			esql.executeQueryAndPrintResult(trashql);
 		}
 		catch(Exception e)
 		{
