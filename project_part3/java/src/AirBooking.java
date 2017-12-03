@@ -405,7 +405,7 @@ public class AirBooking
 	}
 	
 	public boolean flightNumIsValid(String flightNum){
-		String trashql = "SELECT * FROM flight f WHERE f.flightNum = " + flightNum + ";";
+		String trashql = "SELECT * FROM flight f WHERE f.flightNum = '" + flightNum + "';";
 		try
 		{
 			List<List<String>> returnval;
