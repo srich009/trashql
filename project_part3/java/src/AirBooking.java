@@ -569,14 +569,14 @@ public class AirBooking
 				flightnum = flightnum.substring(0,7); 
 			}
 			while(!esql.flightNumIsValid(flightnum)){
+				System.out.println("Invalid flight number, please try again.");
+				System.out.println("Enter a flight number");
+				flightnum = str_get.nextLine();
 				if(flightnum.length() > 8)
 				{ 
 					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
 					flightnum = flightnum.substring(0,7); 
-				}
-				System.out.println("Invalid flight number, please try again.");
-				System.out.println("Enter a flight number");
-				flightnum = str_get.nextLine();				
+				}				
 			}
 			
 			// this should be done by system automatically
@@ -634,14 +634,14 @@ public class AirBooking
 				flightnum = flightnum.substring(0,7); 
 			}
 			while(!esql.flightNumIsValid(flightnum)){
+				System.out.println("Invalid flight number, please try again.");
+				System.out.println("Enter a flight number");
+				flightnum = str_get.nextLine();
 				if(flightnum.length() > 8)
 				{ 
 					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
 					flightnum = flightnum.substring(0,7); 
-				}
-				System.out.println("Invalid flight number, please try again.");
-				System.out.println("Enter a flight number");
-				flightnum = str_get.nextLine();				
+				}			
 			}
 			
 			System.out.println("Enter a score");
