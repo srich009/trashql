@@ -344,13 +344,26 @@ public class AirBooking
 		return input;
 	}// end readChoice
 	
+	//-----------START of our own helper functions--------------
+	public boolean isNumeric(String s) {
+		return s != null && s.matches("[-+]?\\d*\\.?\\d+");  
+	}  // function from: https://stackoverflow.com/questions/14206768/how-to-check-if-a-string-is-numeric
+	
 	public boolean pidIsValid(String pid){
+		if(!isNumeric(pid)){
+			System.out.println("Invalid pid");
+			return false;
+		}
 		String trashql = "SELECT pid FROM passenger WHERE pid = " + pid;
 		try
 		{
 			List<List<String>> returnval;
 			returnval = executeQueryAndReturnResult(trashql);
-			System.out.print(returnval);
+			if(returnval.size() == 0)
+			{
+				System.out.println("Invalid pid");
+				return false;
+			}
 		}
 		catch(Exception e)
 		{
@@ -379,17 +392,48 @@ public class AirBooking
 		return true;
 	}
 	
-	public String getPid()
-	{
-		String trashql = "select max(pid) from passenger;" 
-		List<List<String>> r2 = esql.executeQueryAndReturnResult(trashql2);
-		pid = r2.get(0).get(0);
-		return pid;
+	public boolean scoreIsValid(String score){
+		if(!isNumeric(score)){
+			return false;
+		}
+		int score2 = Integer.parseInt(score);
+		if(score2 < 0 || score2 > 5)
+		{
+			return false;
+		}
+		return true;
+	}
+	
+	public String getPid(String table)
+	{	
+		String trashql = "select max(pid) from " + table +";";
+		String pid = "";
+		try
+		{
+			List<List<String>> r2 = executeQueryAndReturnResult(trashql);
+			pid = r2.get(0).get(0);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		return Integer.toString(Integer.parseInt(pid) + 1);
 	}
 	
 	public String getRid()
 	{
-		return "";
+		String trashql = "select max(rid) from ratings;";
+		String pid = "";
+		try
+		{
+			List<List<String>> r2 = executeQueryAndReturnResult(trashql);
+			pid = r2.get(0).get(0);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		return Integer.toString(Integer.parseInt(pid) + 1);
 	}
 	
 //------------------------------------------------------------------------------
@@ -415,25 +459,39 @@ public class AirBooking
 			System.out.println("Enter Passenger's Full Name");
 			p_name = str_get.nextLine();
 			if(p_name.length() > 24)
-			{ p_name = p_name.substring(0,23); }
+			{ 
+				System.out.println("Your Passenger name was more than 24 characters long, it has been substringed to 24 characters.");
+				p_name = p_name.substring(0,23);
+			}
 
 			// NEED TO CHECK
 			System.out.println("Enter Date of Birth (format: YYYY-MM-DD)");
 			p_dob = str_get.nextLine();
+			while(!esql.DateIsValid(p_dob)){
+				System.out.println("Invalid date, please try again.");
+				System.out.println("Enter Date of Birth (format: YYYY-MM-DD)");
+				p_dob = str_get.nextLine();				
+			}
 			
 			System.out.println("Enter Country");
 			p_country = str_get.nextLine();
 			if(p_country.length() > 24)
-			{ p_country = p_country.substring(0,23); }
+			{ 
+				System.out.println("Your Country name was more than 24 characters long, it has been substringed to 24 characters.");
+				p_country = p_country.substring(0,23);
+			}
 			
 			System.out.println("Enter Passport number");
 			p_pass = str_get.nextLine();
 			if(p_pass.length() > 10)
-			{ p_pass = p_pass.substring(0,9); }
+			{ 
+				System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
+				p_pass = p_pass.substring(0,9);
+			}
 			
 			// this should be done by system automatically
-			System.out.println("Enter Passenger ID");
-			p_id = str_get.nextLine();
+			p_id = esql.getPid("passenger");
+			//System.out.println(p_id);
 			
 			String trashql = "insert into passenger (pID,passNum,fullName,bdate,country)" +
 			"values (" + 
@@ -468,33 +526,39 @@ public class AirBooking
 		
 		try
 		{		
-			System.out.println("Enter a booking Refernce number");
+			System.out.println("Enter a booking reference number");
 			bookref = str_get.nextLine();
 			if(bookref.length() > 10)
-			{ bookref = bookref.substring(0,9); }
+			{ 
+				System.out.println("Your booking reference number was more than 10 characters long, it has been substringed to 10 characters.");
+				bookref = bookref.substring(0,9);
+			}
 						
 			// NEED TO CHECK
 			System.out.println("Enter a departure date (format: YYYY-MM-DD)");
 			date = str_get.nextLine();
+			while(!esql.DateIsValid(date)){
+				System.out.println("Invalid date, please try again.");
+				System.out.println("Enter a departure date (format: YYYY-MM-DD)");
+				date = str_get.nextLine();				
+			}
 			
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
 			if(flightnum.length() > 8)
-			{ flightnum = flightnum.substring(0,7); }
+			{ 
+				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+				flightnum = flightnum.substring(0,7); 
+			}
 			
-			System.out.println("Enter a pid");
-			pid = str_get.nextLine();
-			
-			/*while(!esql.pidIsValid(pid)){
-				System.out.println("Invalid IP, please try again.");
-				System.out.println("Enter a pid");
-				pid = str_get.nextInt();
-			}*/
+			// this should be done by system automatically
+			pid = esql.getPid("booking");
+			//System.out.println(pid);
 			
 			String trashql = "INSERT INTO booking(bookref, departure, flightnum, pid)" +
-							 "VALUES(" + bookref + ", "
-								       + date + ", "
-								       + flightnum + ", "
+							 "VALUES('" + bookref + "', '"
+								       + date + "', '"
+								       + flightnum + "', "
 								       + pid + ")";
 			
 			esql.executeUpdate(trashql);
@@ -519,34 +583,46 @@ public class AirBooking
 		String pid = "";
 		String flightnum = "";
 		String score = "";
+		String comment = "";
 		
 		try
 		{
 
 			// should be done by system automatically
-			System.out.println("Enter a rid");
-			rid = str_get.nextLine();
+			rid = esql.getRid();
 
 			System.out.println("Enter a pid");
 			pid = str_get.nextLine();
+			while(!esql.pidIsValid(pid)){
+				System.out.println("Enter a pid");
+				pid = str_get.nextLine();
+			}
 
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
+			//have to check if flight exists
 			if(flightnum.length() > 10)
-			{ flightnum = flightnum.substring(0,9); }
+			{ 
+				flightnum = flightnum.substring(0,9);
+			}
 			
 			System.out.println("Enter a score");
 			score = str_get.nextLine();
+			while(!esql.scoreIsValid(score)){
+				System.out.println("Invalid score, enter a score in the range 0-5.");
+				System.out.println("Enter a score");
+				score = str_get.nextLine();
+			}
 			
 			System.out.println("Enter a comment");
-			String comment = str_get.nextLine();
+			comment = str_get.nextLine();
 		
 			String trashql = "INSERT INTO ratings(rid, pid, flightnum, score, comment) " + 
 							 "VALUES( " + rid + ", "
-										+ pid + ", "
-										+ flightnum + ", "
-										+ score + ", "
-										+ comment + ");";
+										+ pid + ", '"
+										+ flightnum + "', '"
+										+ score + "', '"
+										+ comment + "');";
 			
 			esql.executeUpdate(trashql);
 		
