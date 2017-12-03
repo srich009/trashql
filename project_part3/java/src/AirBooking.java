@@ -422,6 +422,28 @@ public class AirBooking
 		return true;
 	}
 	
+	public boolean isPassNumUnique(String passnum)
+	{
+		String trashql = "SELECT * FROM passenger p WHERE p.passnum = '" + passnum + "';";
+		try
+		{
+			List<List<String>> returnval;
+			returnval = executeQueryAndReturnResult(trashql);
+			if(returnval.size() != 0)
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+	}
+	
 	public String getPid(String table)
 	{	
 		String trashql = "select max(pid) from " + table +";";
@@ -505,6 +527,16 @@ public class AirBooking
 			{ 
 				System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
 				p_pass = p_pass.substring(0,9);
+			}
+			while(!esql.isPassNumUnique(p_pass)){
+				System.out.println("Invalid Passport number");
+				System.out.println("Enter Passport number");
+				p_pass = str_get.nextLine();
+				if(p_pass.length() > 10)
+				{ 
+					System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
+					p_pass = p_pass.substring(0,10);
+				}
 			}
 			
 			// this should be done by system automatically
