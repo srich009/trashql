@@ -404,6 +404,24 @@ public class AirBooking
 		return true;
 	}
 	
+	public boolean flightNumIsValid(String flightNum){
+		String trashql = "SELECT * FROM flight f WHERE f.flightNum = " + flightNum + ";";
+		try
+		{
+			List<List<String>> returnval;
+			returnval = executeQueryAndReturnResult(trashql);
+			if(returnval.size() == 0)
+			{
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			return false;
+		}
+		return true;
+	}
+	
 	public String getPid(String table)
 	{	
 		String trashql = "select max(pid) from " + table +";";
@@ -550,6 +568,16 @@ public class AirBooking
 				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
 				flightnum = flightnum.substring(0,7); 
 			}
+			while(!esql.flightNumIsValid(flightnum)){
+				if(flightnum.length() > 8)
+				{ 
+					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+					flightnum = flightnum.substring(0,7); 
+				}
+				System.out.println("Invalid flight number, please try again.");
+				System.out.println("Enter a flight number");
+				flightnum = str_get.nextLine();				
+			}
 			
 			// this should be done by system automatically
 			pid = esql.getPid("booking");
@@ -600,10 +628,20 @@ public class AirBooking
 
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
-			//have to check if flight exists
-			if(flightnum.length() > 10)
+			if(flightnum.length() > 8)
 			{ 
-				flightnum = flightnum.substring(0,9);
+				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+				flightnum = flightnum.substring(0,7); 
+			}
+			while(!esql.flightNumIsValid(flightnum)){
+				if(flightnum.length() > 8)
+				{ 
+					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+					flightnum = flightnum.substring(0,7); 
+				}
+				System.out.println("Invalid flight number, please try again.");
+				System.out.println("Enter a flight number");
+				flightnum = str_get.nextLine();				
 			}
 			
 			System.out.println("Enter a score");
