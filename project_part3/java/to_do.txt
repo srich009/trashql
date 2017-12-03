@@ -11,7 +11,7 @@ Query 2)
 --------
 x	bookref			-char(10) limit
 ~	date			-needs to be date format
-~	flightnum		-needs to be an existing flightnum AND char(8) limit
+x	flightnum		-needs to be an existing flightnum AND char(8) limit
 x	pid				-system has to increment from last id
 	
 	
@@ -19,6 +19,6 @@ Query 3)
 --------
 x	rid				-system has to increment from last id
 x	pid				-needs to be an existing pid
-~	flightnum		-needs to be an existing flightnum AND char(8) limit
+x	flightnum		-needs to be an existing flightnum AND char(8) limit
 x	score			-0-5 only
 	comment			-???
