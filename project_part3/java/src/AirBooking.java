@@ -652,7 +652,7 @@ public class AirBooking
 				score = str_get.nextLine();
 			}
 			
-			System.out.println("Enter a comment");
+			System.out.println("Enter a comment (hit <Enter> with no text to skip)");
 			comment = str_get.nextLine();
 		
 			String trashql = "INSERT INTO ratings(rid, pid, flightnum, score, comment) " + 
@@ -734,7 +734,12 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("Enter number of most popular destinations to see ");
 			dest_num = str_get.nextLine();
-			dest_num = dest_num.trim();
+			while(!esql.isNumeric(dest_num) || Integer.parseInt(dest_num) < 0)
+			{
+				System.out.println("not valid number");
+				System.out.println("Enter the number of desired records");
+				dest_num = str_get.nextLine();
+			}	
 			
 			String trashql = "SELECT f.destination, COUNT(f.destination)AS num_of " +
 			" FROM flight f " +
@@ -760,6 +765,12 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("How many highest rated routes would you like to see?: ");
 			k = str_get.nextLine();
+			while(!esql.isNumeric(k) || Integer.parseInt(k) < 0)
+			{
+				System.out.println("not valid number");
+				System.out.println("Enter the number of desired records");
+				k = str_get.nextLine();
+			}	
 
 			String trashql = "SELECT a.name, r.flightnum, f.origin, f.destination, f.plane, AVG(r.score) AS avg_score " + 
 							 "FROM airline a, flight f, ratings r " +
@@ -794,7 +805,12 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("Enter the number of desired records");
 			numRecords = str_get.nextLine();
-			
+			while(!esql.isNumeric(numRecords) || Integer.parseInt(numRecords) < 0)
+			{
+				System.out.println("not valid number");
+				System.out.println("Enter the number of desired records");
+				numRecords = str_get.nextLine();
+			}			
 			
 			String trashql = "SELECT a.name, f.flightnum, f.origin, f.destination, f.plane, f.duration " +
 							 "FROM airline a, flight f " +
@@ -818,14 +834,33 @@ public class AirBooking
 		
 		try // print # of seats
 		{
-			System.out.println("Enter a flight number");
-			fnum = str_get.nextLine();
-			fnum = fnum.trim();
-				
 			// NEED TO CHECK
-			System.out.println("Enter a flight date (YYYY-MM-DD)");
-			date = str_get.nextLine();
-			date = date.trim();		
+			System.out.println("Enter a flight number");	
+			fnum = str_get.nextLine();
+			if(fnum.length() > 8)
+			{ 
+				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+				fnum = fnum.substring(0,8); 
+			}
+			while(!esql.flightNumIsValid(fnum)){
+				System.out.println("Invalid flight number, please try again.");
+				System.out.println("Enter a flight number");
+				fnum = str_get.nextLine();
+				if(fnum.length() > 8)
+				{ 
+					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
+					fnum = fnum.substring(0,8); 
+				}			
+			}
+			
+			// NEED TO CHECK
+			System.out.println("Enter a flight date (YYYY-MM-DD)");;	
+			date = str_get.nextLine();	
+			while(!esql.DateIsValid(date)){
+				System.out.println("Invalid date, please try again.");
+				System.out.println("Enter a departure date (format: YYYY-MM-DD)");
+				date = str_get.nextLine();				
+			}	
 
 			String trashql1 = "select seats from flight where flightnum = '" + fnum + "';";
 
