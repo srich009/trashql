@@ -349,6 +349,18 @@ public class AirBooking
 		return s != null && s.matches("[-+]?\\d*\\.?\\d+");  
 	}  // function from: https://stackoverflow.com/questions/14206768/how-to-check-if-a-string-is-numeric
 	
+	public boolean isLeapYear(int year) {
+	  if (year % 4 != 0) {
+		return false;
+	  } else if (year % 400 == 0) {
+		return true;
+	  } else if (year % 100 == 0) {
+		return false;
+	  } else {
+		return true;
+	  }
+	}//function from: https://stackoverflow.com/questions/1021324/java-code-for-calculating-leap-year/1021373#1021373
+	
 	public boolean pidIsValid(String pid){
 		if(!isNumeric(pid)){
 			System.out.println("Invalid pid");
@@ -382,8 +394,34 @@ public class AirBooking
 			int x1 = Integer.parseInt(box[0]); // year
 			int x2 = Integer.parseInt(box[1]); // month
 			int x3 = Integer.parseInt(box[2]); // day
+			
 			if(x2 >12 || x2 < 1){return false;}
-			if(x2 >31 || x2 < 1){return false;}
+			
+			if(x2 == 1 || x2 == 3 || x2 == 5 || x2 == 7 || x2 == 8 || x2 == 10 || x2 == 12)
+			{
+				if(x3 >31 || x3 < 1){return false;}
+			}
+			else if(x2 == 9 || x2 == 4 || x2 == 6 || x2 == 11){
+				if(x3 > 30 || x3 < 1)
+				{
+					return false;
+				}
+			}
+			else{
+				if(isLeapYear(x1)){					
+					if(x3 > 29 || x3 < 1)
+					{
+						return false;
+					} 
+				}
+				else{				
+					if(x3 > 28 || x3 < 1)
+					{
+						return false;
+					} 
+				}
+					
+				}
 		}
 		catch(Exception e)
 		{
@@ -501,7 +539,7 @@ public class AirBooking
 			if(p_name.length() > 24)
 			{ 
 				System.out.println("Your Passenger name was more than 24 characters long, it has been substringed to 24 characters.");
-				p_name = p_name.substring(0,23);
+				p_name = p_name.substring(0,24);
 			}
 
 			// NEED TO CHECK
@@ -518,7 +556,7 @@ public class AirBooking
 			if(p_country.length() > 24)
 			{ 
 				System.out.println("Your Country name was more than 24 characters long, it has been substringed to 24 characters.");
-				p_country = p_country.substring(0,23);
+				p_country = p_country.substring(0,24);
 			}
 			
 			System.out.println("Enter Passport number");
@@ -526,7 +564,7 @@ public class AirBooking
 			if(p_pass.length() > 10)
 			{ 
 				System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
-				p_pass = p_pass.substring(0,9);
+				p_pass = p_pass.substring(0,10);
 			}
 			while(!esql.isPassNumUnique(p_pass)){
 				System.out.println("Invalid Passport number");
@@ -581,7 +619,7 @@ public class AirBooking
 			if(bookref.length() > 10)
 			{ 
 				System.out.println("Your booking reference number was more than 10 characters long, it has been substringed to 10 characters.");
-				bookref = bookref.substring(0,9);
+				bookref = bookref.substring(0,10);
 			}
 						
 			// NEED TO CHECK
@@ -598,7 +636,7 @@ public class AirBooking
 			if(flightnum.length() > 8)
 			{ 
 				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-				flightnum = flightnum.substring(0,7); 
+				flightnum = flightnum.substring(0,8); 
 			}
 			while(!esql.flightNumIsValid(flightnum)){
 				System.out.println("Invalid flight number, please try again.");
@@ -607,7 +645,7 @@ public class AirBooking
 				if(flightnum.length() > 8)
 				{ 
 					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-					flightnum = flightnum.substring(0,7); 
+					flightnum = flightnum.substring(0,8); 
 				}				
 			}
 			
@@ -663,7 +701,7 @@ public class AirBooking
 			if(flightnum.length() > 8)
 			{ 
 				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-				flightnum = flightnum.substring(0,7); 
+				flightnum = flightnum.substring(0,8); 
 			}
 			while(!esql.flightNumIsValid(flightnum)){
 				System.out.println("Invalid flight number, please try again.");
@@ -672,7 +710,7 @@ public class AirBooking
 				if(flightnum.length() > 8)
 				{ 
 					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-					flightnum = flightnum.substring(0,7); 
+					flightnum = flightnum.substring(0,8); 
 				}			
 			}
 			

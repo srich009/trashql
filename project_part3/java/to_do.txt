@@ -1,7 +1,7 @@
 Query 1)			Limits							Key
 --------			------							---
 X	name			-char(24) limit					x = done
-~	date			-needs to be date format		~ = kinda done
+x	date			-needs to be date format		~ = kinda done
 x	country			-char(24) limit					= not done lol
 x	pass			-char(10) limit
 x	pid				-system has to increment from last id
@@ -10,7 +10,7 @@ x	pid				-system has to increment from last id
 Query 2)
 --------
 x	bookref			-char(10) limit
-~	date			-needs to be date format
+x	date			-needs to be date format
 x	flightnum		-needs to be an existing flightnum AND char(8) limit
 x	pid				-system has to increment from last id
 	
@@ -21,4 +21,12 @@ x	rid				-system has to increment from last id
 x	pid				-needs to be an existing pid
 x	flightnum		-needs to be an existing flightnum AND char(8) limit
 x	score			-0-5 only
-	comment			-???
+x	comment			-optional
+
+
+--------------
+To/do
+-----
+
+1) Genereate random book ref number
+2) Querry 4
