@@ -30,3 +30,4 @@ To/do
 
 1) Genereate random book ref number
 2) Querry 4
+3) Change the substring stuff to be incorrect loop on you stuff
