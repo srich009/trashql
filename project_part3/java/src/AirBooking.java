@@ -558,6 +558,47 @@ public class AirBooking
 		return randBookRef;
 	}
 	
+	public boolean doesPassNumExist(String passNum)
+	{
+		if(passNum.length() != 10){return false;}
+		
+		String trashql = "SELECT * FROM passenger p WHERE p.passnum = '" + passNum + "';";
+		try
+		{
+			List<List<String>> returnval;
+			returnval = executeQueryAndReturnResult(trashql);
+			if(returnval.size() != 0)
+			{
+				return true;
+			}
+			else
+			{
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	public String getPidFromPassNum(String passport_number)
+	{
+		String trashql = "SELECT pid FROM passenger WHERE passNum = '" + passport_number + "';";
+		String pid = "-1";
+		try
+		{
+			List<List<String>> r2 = executeQueryAndReturnResult(trashql);
+			pid = r2.get(0).get(0);
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		return pid;
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -670,6 +711,7 @@ public class AirBooking
 		String bookref = "";
 		String date = "";		
 		String flightnum = "";
+		String passport_number = "";
 		String pid = "";
 		
 		try
@@ -705,8 +747,16 @@ public class AirBooking
 			
 			// this should be done by system automatically
 			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
-			pid = esql.getPid("booking");
-			//System.out.println(pid);
+			System.out.println("Enter a passport number");
+			passport_number = str_get.nextLine();
+			while(!esql.doesPassNumExist(passport_number))
+			{
+				System.out.println("Invalid passport number, please try again");
+				System.out.println("Enter a passport number");
+				passport_number = str_get.nextLine();
+			}
+			pid = esql.getPidFromPassNum(passport_number);
+			System.out.println(pid);
 			
 			String trashql = "INSERT INTO booking(bookref, departure, flightnum, pid)" +
 							 "VALUES('" + bookref + "', '"
@@ -733,6 +783,7 @@ public class AirBooking
 		// comment TEXT,
 
 		String rid = "";
+		String passport_number = "";
 		String pid = "";
 		String flightnum = "";
 		String score = "";
@@ -745,12 +796,16 @@ public class AirBooking
 			rid = esql.getRid();
 
 			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
-			System.out.println("Enter a pid");
-			pid = str_get.nextLine();
-			while(!esql.pidIsValid(pid)){
-				System.out.println("Enter a pid");
-				pid = str_get.nextLine();
+			System.out.println("Enter a passport number");
+			passport_number = str_get.nextLine();
+			while(!esql.doesPassNumExist(passport_number))
+			{
+				System.out.println("Invalid passport number, please try again");
+				System.out.println("Enter a passport number");
+				passport_number = str_get.nextLine();
 			}
+			pid = esql.getPidFromPassNum(passport_number);
+			//System.out.println(pid);
 
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
