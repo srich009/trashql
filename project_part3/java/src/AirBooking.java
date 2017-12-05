@@ -23,6 +23,7 @@ import java.io.InputStreamReader;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Scanner; // read in string inputs for queries
+import java.util.Random; // generate random nums
 
 /**
  * This class defines a simple embedded SQL utility class that is designed to
@@ -516,6 +517,47 @@ public class AirBooking
 		return Integer.toString(Integer.parseInt(pid) + 1);
 	}
 	
+	public String getBookRef()
+	{
+		String bookref = "";
+		String randBookRef = "";
+		
+		do
+		{
+			randBookRef = "";
+			Random rand = new Random();
+			
+			for(int i = 0; i < 10; i ++)
+			{
+				int n = rand.nextInt(25) + 65;
+				char a = (char) n;
+				if(n % 2 == 0)
+				{
+					n = rand.nextInt(9) + 48;
+					a = (char) n;
+				}
+				randBookRef += a;
+			}
+			//System.out.println(randBookRef);
+			
+			String trashql = "SELECT bookref FROM booking WHERE bookref = '" + randBookRef + "';";
+			try
+			{
+				List<List<String>> r2 = executeQueryAndReturnResult(trashql);
+				bookref = r2.get(0).get(0);
+			}
+			catch(Exception e)
+			{
+				//System.out.println(randBookRef);
+				return randBookRef;
+			}
+			//System.out.println("Randomly generated one exists!");
+		}while(bookref.length() != 0);
+			
+		
+		return randBookRef;
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -632,14 +674,7 @@ public class AirBooking
 		
 		try
 		{		
-			// this should be done by system automatically
-			System.out.println("Enter a booking reference number");
-			bookref = str_get.nextLine();
-			if(bookref.length() > 10)
-			{ 
-				System.out.println("Your booking reference number was more than 10 characters long, it has been substringed to 10 characters.");
-				bookref = bookref.substring(0,10);
-			}
+			bookref = esql.getBookRef();
 						
 			// NEED TO CHECK
 			System.out.println("Enter a departure date (format: YYYY-MM-DD)");
