@@ -632,6 +632,7 @@ public class AirBooking
 		
 		try
 		{		
+			// this should be done by system automatically
 			System.out.println("Enter a booking reference number");
 			bookref = str_get.nextLine();
 			if(bookref.length() > 10)
@@ -651,23 +652,24 @@ public class AirBooking
 			
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
-			if(flightnum.length() > 8)
+			while(flightnum.length() > 8 || flightnum.length() == 0)
 			{ 
-				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-				flightnum = flightnum.substring(0,8); 
+				System.out.println("Your flight number was invalid length.");
+				flightnum = str_get.nextLine();
 			}
 			while(!esql.flightNumIsValid(flightnum)){
 				System.out.println("Invalid flight number, please try again.");
 				System.out.println("Enter a flight number");
 				flightnum = str_get.nextLine();
-				if(flightnum.length() > 8)
+				while(flightnum.length() > 8 || flightnum.length() == 0)
 				{ 
-					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-					flightnum = flightnum.substring(0,8); 
-				}				
+					System.out.println("Your flight number was invalid length.");
+					flightnum = str_get.nextLine();
+				}			
 			}
 			
 			// this should be done by system automatically
+			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
 			pid = esql.getPid("booking");
 			//System.out.println(pid);
 			
@@ -704,9 +706,10 @@ public class AirBooking
 		try
 		{
 
-			// should be done by system automatically
+			// this should be done by system automatically
 			rid = esql.getRid();
 
+			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
 			System.out.println("Enter a pid");
 			pid = str_get.nextLine();
 			while(!esql.pidIsValid(pid)){
@@ -716,19 +719,19 @@ public class AirBooking
 
 			System.out.println("Enter a flight number");
 			flightnum = str_get.nextLine();
-			if(flightnum.length() > 8)
+			while(flightnum.length() > 8 || flightnum.length() == 0)
 			{ 
-				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-				flightnum = flightnum.substring(0,8); 
+				System.out.println("Your flight number was invalid length.");
+				flightnum = str_get.nextLine();
 			}
 			while(!esql.flightNumIsValid(flightnum)){
 				System.out.println("Invalid flight number, please try again.");
 				System.out.println("Enter a flight number");
 				flightnum = str_get.nextLine();
-				if(flightnum.length() > 8)
+				while(flightnum.length() > 8 || flightnum.length() == 0)
 				{ 
-					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-					flightnum = flightnum.substring(0,8); 
+					System.out.println("Your flight number was invalid length.");
+					flightnum = str_get.nextLine();
 				}			
 			}
 			
@@ -917,27 +920,27 @@ public class AirBooking
 	// 9.) Find Number of Available Seats on a given Flight
 	public static void FindNumberOfAvailableSeatsForFlight(AirBooking esql)
 	{
-		String fnum = "";
+		String flightnum = "";
 		String date = "";
 		
 		try // print # of seats
 		{
 			// NEED TO CHECK
-			System.out.println("Enter a flight number");	
-			fnum = str_get.nextLine();
-			if(fnum.length() > 8)
+			System.out.println("Enter a flight number");
+			flightnum = str_get.nextLine();
+			while(flightnum.length() > 8 || flightnum.length() == 0)
 			{ 
-				System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-				fnum = fnum.substring(0,8); 
+				System.out.println("Your flight number was invalid length.");
+				flightnum = str_get.nextLine();
 			}
-			while(!esql.flightNumIsValid(fnum)){
+			while(!esql.flightNumIsValid(flightnum)){
 				System.out.println("Invalid flight number, please try again.");
 				System.out.println("Enter a flight number");
-				fnum = str_get.nextLine();
-				if(fnum.length() > 8)
+				flightnum = str_get.nextLine();
+				while(flightnum.length() > 8 || flightnum.length() == 0)
 				{ 
-					System.out.println("Your flight number was more than 8 characters long, it has been substringed to 8 characters.");
-					fnum = fnum.substring(0,8); 
+					System.out.println("Your flight number was invalid length.");
+					flightnum = str_get.nextLine();
 				}			
 			}
 			
@@ -950,15 +953,15 @@ public class AirBooking
 				date = str_get.nextLine();				
 			}	
 
-			String trashql1 = "select seats from flight where flightnum = '" + fnum + "';";
+			String trashql1 = "select seats from flight where flightnum = '" + flightnum + "';";
 
 			// get seat number			
 			List<List<String>> r1 = esql.executeQueryAndReturnResult(trashql1);
 			
 			String trashql2 = "select count(*) " +
 			"from booking b, flight f " +
-			"where f.flightnum = " + "'" + fnum + "'" + " and " +
-			"b.flightnum = " + "'" + fnum + "'" + " and " +
+			"where f.flightnum = " + "'" + flightnum + "'" + " and " +
+			"b.flightnum = " + "'" + flightnum + "'" + " and " +
 			"b.departure = '" + date + "';";
 			
 			// get booked number
