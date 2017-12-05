@@ -462,6 +462,8 @@ public class AirBooking
 	
 	public boolean isPassNumUnique(String passnum)
 	{
+		if(passnum.length() != 10){return false;}
+		
 		String trashql = "SELECT * FROM passenger p WHERE p.passnum = '" + passnum + "';";
 		try
 		{
@@ -536,10 +538,18 @@ public class AirBooking
 		{
 			System.out.println("Enter Passenger's Full Name");
 			p_name = str_get.nextLine();
-			if(p_name.length() > 24)
+			while(p_name.length() > 24 || p_name.length() == 0)
 			{ 
-				System.out.println("Your Passenger name was more than 24 characters long, it has been substringed to 24 characters.");
-				p_name = p_name.substring(0,24);
+				if(p_name.length() > 24)
+				{
+					System.out.println("Your Passenger name was more than 24 characters long. Try Again.");
+					p_name = str_get.nextLine();
+				}
+				else
+				{
+					System.out.println("Your Passenger name was empty. Try Again.");
+					p_name = str_get.nextLine();
+				}
 			}
 
 			// NEED TO CHECK
@@ -553,27 +563,35 @@ public class AirBooking
 			
 			System.out.println("Enter Country");
 			p_country = str_get.nextLine();
-			if(p_country.length() > 24)
+			while(p_country.length() > 24 || p_country.length() == 0)
 			{ 
-				System.out.println("Your Country name was more than 24 characters long, it has been substringed to 24 characters.");
-				p_country = p_country.substring(0,24);
+				if(p_country.length() > 24)
+				{
+					System.out.println("Your country name was more than 24 characters long. Try Again.");
+					p_country = str_get.nextLine();
+				}
+				else
+				{
+					System.out.println("Your country name was empty. Try Again.");
+					p_country = str_get.nextLine();
+				}
 			}
 			
 			System.out.println("Enter Passport number");
 			p_pass = str_get.nextLine();
-			if(p_pass.length() > 10)
-			{ 
-				System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
-				p_pass = p_pass.substring(0,10);
-			}
-			while(!esql.isPassNumUnique(p_pass)){
-				System.out.println("Invalid Passport number");
-				System.out.println("Enter Passport number");
-				p_pass = str_get.nextLine();
-				if(p_pass.length() > 10)
+			while(!esql.isPassNumUnique(p_pass) || p_pass.length() != 10)
+			{
+				if(p_pass.length() != 10 )
 				{ 
-					System.out.println("Your Passport number was more than 10 characters long, it has been substringed to 10 characters.");
-					p_pass = p_pass.substring(0,10);
+					System.out.println("Your Passport number was not the right length.");
+					System.out.println("Enter Passport number");
+					p_pass = str_get.nextLine();
+				}
+				else
+				{
+					System.out.println("Invalid Passport number");
+					System.out.println("Enter Passport number");
+					p_pass = str_get.nextLine();
 				}
 			}
 			
