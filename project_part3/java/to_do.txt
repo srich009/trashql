@@ -32,6 +32,4 @@ To/do
 4) Add indexes to the attributes we frequently access (Hash table)
 5) For inserting a rating querry double check what happens if user inserts double
 6) Check that the passenger who reviews the flight has taken that flght (maybe?)
-7) Make sure for inserts that there no double inserts
-
 3) Change the substring stuff to be incorrect loop on you stuff (Might be done? have to check)
