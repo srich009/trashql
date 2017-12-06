@@ -612,7 +612,26 @@ public class AirBooking
 		}
 
 		return true;
-		
+	}
+	
+	public boolean isValidBooking(String date, String flightnum, String pid)
+	{
+		String trashql = "SELECT * FROM booking WHERE departure = '" + date
+							+ "' AND flightNum = '" + flightnum
+							+ "' AND pid = " + pid + ";";
+		try
+		{
+			List<List<String>> r2 = executeQueryAndReturnResult(trashql);
+			if(r2.size() > 0) // it exists
+			{
+				return false;
+			}
+		}
+		catch(Exception e)
+		{
+			System.err.println(e.getMessage());
+		}
+		return true;
 	}
 	
 //------------------------------------------------------------------------------
@@ -729,50 +748,58 @@ public class AirBooking
 		String flightnum = "";
 		String passport_number = "";
 		String pid = "";
+		boolean validEntry = false;
 		
 		try
 		{		
 			bookref = esql.getBookRef();
 						
-			// NEED TO CHECK
-			System.out.println("Enter a departure date (format: YYYY-MM-DD)");
-			date = str_get.nextLine();
-			while(!esql.DateIsValid(date)){
-				System.out.println("Invalid date, please try again.");
+			do
+			{
+				// NEED TO CHECK
 				System.out.println("Enter a departure date (format: YYYY-MM-DD)");
-				date = str_get.nextLine();				
-			}
-			
-			System.out.println("Enter a flight number");
-			flightnum = str_get.nextLine();
-			while(flightnum.length() > 8 || flightnum.length() == 0)
-			{ 
-				System.out.println("Your flight number was invalid length.");
-				flightnum = str_get.nextLine();
-			}
-			while(!esql.flightNumIsValid(flightnum)){
-				System.out.println("Invalid flight number, please try again.");
+				date = str_get.nextLine();
+				while(!esql.DateIsValid(date)){
+					System.out.println("Invalid date, please try again.");
+					System.out.println("Enter a departure date (format: YYYY-MM-DD)");
+					date = str_get.nextLine();				
+				}
+				
 				System.out.println("Enter a flight number");
 				flightnum = str_get.nextLine();
 				while(flightnum.length() > 8 || flightnum.length() == 0)
 				{ 
 					System.out.println("Your flight number was invalid length.");
 					flightnum = str_get.nextLine();
-				}			
-			}
-			
-			// this should be done by system automatically
-			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
-			System.out.println("Enter a passport number");
-			passport_number = str_get.nextLine();
-			while(!esql.doesPassNumExist(passport_number) || !esql.is_trashport(passport_number) )
-			{
-				System.out.println("Invalid passport number, please try again");
+				}
+				while(!esql.flightNumIsValid(flightnum)){
+					System.out.println("Invalid flight number, please try again.");
+					System.out.println("Enter a flight number");
+					flightnum = str_get.nextLine();
+					while(flightnum.length() > 8 || flightnum.length() == 0)
+					{ 
+						System.out.println("Your flight number was invalid length.");
+						flightnum = str_get.nextLine();
+					}			
+				}
+				
+				// this should be done by system automatically
+				// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
 				System.out.println("Enter a passport number");
 				passport_number = str_get.nextLine();
-			}
-			pid = esql.getPidFromPassNum(passport_number);
-			System.out.println(pid);
+				while(!esql.doesPassNumExist(passport_number))
+				{
+					System.out.println("Invalid passport number, please try again");
+					System.out.println("Enter a passport number");
+					passport_number = str_get.nextLine();
+				}
+				pid = esql.getPidFromPassNum(passport_number);
+				//System.out.println(pid);
+				if(!(validEntry = esql.isValidBooking(date, flightnum, pid))){
+					System.out.println("The combination of the date, flightnum and passport entires is not unique.");
+					System.out.println("Please try again.");
+				}
+			}while(!validEntry);
 			
 			String trashql = "INSERT INTO booking(bookref, departure, flightnum, pid)" +
 							 "VALUES('" + bookref + "', '"
