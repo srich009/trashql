@@ -601,6 +601,20 @@ public class AirBooking
 		return pid;
 	}
 	
+	public boolean is_trashport(String pass)
+	{
+		for(int c = 0; c < pass.length(); c++) 
+		{
+			if(!Character.isLetter(pass.charAt(c)) || Character.isLowerCase(pass.charAt(c)) ) 
+			{
+				return false;
+			}
+		}
+
+		return true;
+		
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -664,7 +678,7 @@ public class AirBooking
 			
 			System.out.println("Enter Passport number");
 			p_pass = str_get.nextLine();
-			while(!esql.isPassNumUnique(p_pass) || p_pass.length() != 10)
+			while(!esql.isPassNumUnique(p_pass) || !esql.is_trashport(p_pass) || p_pass.length() != 10)
 			{
 				if(p_pass.length() != 10 )
 				{ 
@@ -751,7 +765,7 @@ public class AirBooking
 			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
 			System.out.println("Enter a passport number");
 			passport_number = str_get.nextLine();
-			while(!esql.doesPassNumExist(passport_number))
+			while(!esql.doesPassNumExist(passport_number) || !esql.is_trashport(passport_number) )
 			{
 				System.out.println("Invalid passport number, please try again");
 				System.out.println("Enter a passport number");
@@ -800,7 +814,7 @@ public class AirBooking
 			// THIS SHOULD BE A PASSPORT THEN FIND THE ASSOCIATED PID
 			System.out.println("Enter a passport number");
 			passport_number = str_get.nextLine();
-			while(!esql.doesPassNumExist(passport_number))
+			while(!esql.doesPassNumExist(passport_number) || !esql.is_trashport(passport_number))
 			{
 				System.out.println("Invalid passport number, please try again");
 				System.out.println("Enter a passport number");
