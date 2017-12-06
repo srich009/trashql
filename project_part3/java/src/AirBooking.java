@@ -396,6 +396,8 @@ public class AirBooking
 			int x2 = Integer.parseInt(box[1]); // month
 			int x3 = Integer.parseInt(box[2]); // day
 			
+			if(box[1].length() != 2 || box[2].length() != 2 || box[0].length() != 4){return false;}
+			
 			if(x2 >12 || x2 < 1){return false;}
 			
 			if(x2 == 1 || x2 == 3 || x2 == 5 || x2 == 7 || x2 == 8 || x2 == 10 || x2 == 12)
