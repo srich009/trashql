@@ -437,12 +437,20 @@ public class AirBooking
 		if(!isNumeric(score)){
 			return false;
 		}
-		int score2 = Integer.parseInt(score);
-		if(score2 < 0 || score2 > 5)
+		
+		try
+		{
+			int score2 = Integer.parseInt(score);
+			if(score2 < 0 || score2 > 5)
+			{
+				return false;
+			}
+			return true;
+		}
+		catch(Exception e)
 		{
 			return false;
 		}
-		return true;
 	}
 	
 	public boolean flightNumIsValid(String flightNum){
