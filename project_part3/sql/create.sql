@@ -132,4 +132,12 @@ FROM 'bookings.csv'
 WITH DELIMITER ',';
 --SELECT * FROM Booking;
 
+-- indexing
+CREATE Index pID_dex
+ON Passenger (pID ASC)
 
+CREATE Index passNum_dex
+ON Passenger (passNum)
+
+CREATE Index flightNum_dex
+ON Flight (flightNum)
