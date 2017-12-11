@@ -642,6 +642,26 @@ public class AirBooking
 		return true;
 	}
 	
+	public boolean isNumValid(String num){
+		if(!isNumeric(num)){
+			return false;
+		}
+		
+		try
+		{
+			int score2 = Integer.parseInt(num);
+			if(score2 < 0)
+			{
+				return false;
+			}
+			return true;
+		}
+		catch(Exception e)
+		{ // failed to parse integer from string
+			return false;
+		}
+	}
+	
 //------------------------------------------------------------------------------
 	
 	// 1.) Add a new passenger to the database
@@ -966,7 +986,7 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("Enter number of most popular destinations to see ");
 			dest_num = str_get.nextLine();
-			while(!esql.isNumeric(dest_num) || Integer.parseInt(dest_num) < 0)
+			while(!esql.isNumValid(dest_num))
 			{
 				System.out.println("not valid number");
 				System.out.println("Enter the number of desired records");
@@ -997,7 +1017,7 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("How many highest rated routes would you like to see?: ");
 			k = str_get.nextLine();
-			while(!esql.isNumeric(k) || Integer.parseInt(k) < 0)
+			while(!esql.isNumValid(k))
 			{
 				System.out.println("not valid number");
 				System.out.println("Enter the number of desired records");
@@ -1037,7 +1057,7 @@ public class AirBooking
 			// NEED TO CHECK
 			System.out.println("Enter the number of desired records");
 			numRecords = str_get.nextLine();
-			while(!esql.isNumeric(numRecords) || Integer.parseInt(numRecords) < 0)
+			while(!esql.isNumValid(numRecords))
 			{
 				System.out.println("not valid number");
 				System.out.println("Enter the number of desired records");
